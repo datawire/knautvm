@@ -1,0 +1,10 @@
+{
+  "variables": {
+    "version": null,
+    "force_deregister": false
+  },
+
+  "provisioners": [
+
+  ]
+}
