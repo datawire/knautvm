@@ -1,2 +1,7 @@
 # --- IntelliJ IDEA ---
 .idea
+
+# --- Terraform ---
+terraform.tfvars
+terraform.tfstate*
+tfplan*

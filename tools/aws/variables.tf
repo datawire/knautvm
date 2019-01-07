@@ -1,20 +1,16 @@
 variable "region" {
   description = "Cloud region where the machine is located"
-  default = "us-central1"
-}
-
-variable "project" {
-  default = "datawireio"
+  default = "us-east-1"
 }
 
 variable "machine_type" {
   description = "ID of the machine's hardware type"
-  default     = "n1-standard-2"
+  default     = "m4.large"
 }
 
 variable "machine_image" {
   description = "ID of the machine's boot disk image"
-  default = "ubuntu-os-cloud/ubuntu-minimal-1804-lts"
+  default = ""
 }
 
 variable "machine_name_suffix" {
@@ -28,7 +24,7 @@ variable "preemptible" {
 
 variable "ssh_user" {
   description = "Name of the user that can SSH"
-  default = "dev"
+  default = "ubuntu"
 }
 
 variable "ssh_public_key_file" {
