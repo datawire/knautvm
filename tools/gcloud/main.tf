@@ -23,9 +23,10 @@ resource "google_compute_network" "this" {
   auto_create_subnetworks = true
 }
 
-resource "google_compute_firewall" "this" {
+resource "google_compute_firewall" "ingress" {
   name = "${local.machine_name}"
   network = "${google_compute_network.this.name}"
+  direction = "INGRESS"
 
   allow {
     protocol = "icmp"
@@ -33,7 +34,28 @@ resource "google_compute_firewall" "this" {
 
   allow {
     protocol = "tcp"
-    ports = ["22"]
+    ports = [
+      "22",         # SSH
+      "6443",       # Kubernetes API server
+      "30000-32767" # Kubernetes NodePorts
+    ]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "egress" {
+  name = "${local.machine_name}"
+  network = "${google_compute_network.this.name}"
+  direction = "INGRESS"
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports = ["22", "6443", "30000-32767"]
   }
 
   source_ranges = ["0.0.0.0/0"]
