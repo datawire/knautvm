@@ -1,0 +1,32 @@
+---
+
+- name: ensure apt can use https repositories
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: ensure kubernetes apt repository gpg key is installed
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: ensure kubernetes apt repository is installed
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: "kubernetes"
+
+- name: ensure kubernetes packages are installed
+  apt:
+    update_cache: yes
+    name: ["kubeadm={{ kubernetes_version }}", "kubectl={{ kubernetes_version }}", "kubelet={{ kubernetes_version }}"]
+    state: present
+
+- name: ensure kubernetes version is pinned
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - kubeadm
+    - kubectl
+    - kubelet

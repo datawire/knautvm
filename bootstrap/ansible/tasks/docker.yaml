@@ -1,0 +1,27 @@
+---
+
+- name: ensure apt can use https repositories
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: ensure docker apt repository gpg key is installed
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+
+- name: ensure docker apt repository is installed
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+    filename: "docker"
+
+- name: ensure docker engine is installed
+  apt:
+    update_cache: yes
+    name: "docker-ce={{ docker_version }}*"
+    state: present
+
+- name: ensure docker engine version is pinned
+  dpkg_selections:
+    name: docker-ce
+    selection: hold

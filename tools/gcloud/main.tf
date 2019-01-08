@@ -15,7 +15,7 @@ data "google_compute_default_service_account" "default" {}
 
 data "google_compute_image" "ubuntu" {
   project = "ubuntu-os-cloud"
-  family = "minimal"
+  family = "ubuntu-minimal-1810"
 }
 
 resource "google_compute_network" "this" {
@@ -24,7 +24,7 @@ resource "google_compute_network" "this" {
 }
 
 resource "google_compute_firewall" "ingress" {
-  name = "${local.machine_name}"
+  name = "${local.machine_name}-ingress"
   network = "${google_compute_network.this.name}"
   direction = "INGRESS"
 
@@ -39,23 +39,6 @@ resource "google_compute_firewall" "ingress" {
       "6443",       # Kubernetes API server
       "30000-32767" # Kubernetes NodePorts
     ]
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-}
-
-resource "google_compute_firewall" "egress" {
-  name = "${local.machine_name}"
-  network = "${google_compute_network.this.name}"
-  direction = "INGRESS"
-
-  allow {
-    protocol = "icmp"
-  }
-
-  allow {
-    protocol = "tcp"
-    ports = ["22", "6443", "30000-32767"]
   }
 
   source_ranges = ["0.0.0.0/0"]

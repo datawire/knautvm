@@ -1,0 +1,16 @@
+---
+# Remove "snapd" from the system as it increases startup time and is not needed for Kubernetes installation.
+- name: ensure snapd is removed
+  apt:
+    name: snapd
+    state: absent
+    purge: yes
+    autoremove: yes
+
+- name: ensure system software is updated to latest
+  apt:
+    upgrade: full
+
+- include_tasks: swapoff.yaml
+- include_tasks: docker.yaml
+- include_tasks: kubernetes.yaml

@@ -1,0 +1,10 @@
+---
+
+- hosts: 127.0.0.1
+  gather_facts: yes
+  become: yes
+  vars:
+    docker_version: "17.03"
+    kubernetes_version: "1.13*"
+  tasks:
+    - include_tasks: tasks/main.yaml

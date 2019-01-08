@@ -56,4 +56,14 @@ machine-down: init
 machine-up: apply
 
 ssh:
-	ssh -i ../../etc/insecure_id_rsa "dev@$(shell $(TF_OUTPUT) machine_public_ip)"
+	ssh -i ../../etc/insecure_id_rsa \
+		-o StrictHostKeyChecking=no \
+		"dev@$(shell $(TF_OUTPUT) machine_public_ip)"
+
+pull-bootstrap:
+	rm -rf ../../bootstrap
+	scp -r \
+		-i ../../etc/insecure_id_rsa \
+        	-o StrictHostKeyChecking=no \
+		"dev@$(shell $(TF_OUTPUT) machine_public_ip)":/home/dev/bootstrap \
+		../..
